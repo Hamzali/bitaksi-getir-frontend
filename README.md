@@ -1,3 +1,17 @@
-# bitaksi-getir on eleme forntend challenge
+# bitaksi-getir forntend challenge
 
-React app
+# React Web App
+
+# Used libs
+- React
+- Axios
+- Date Range (react-date-range)
+- create-react-app
+
+# Running project loacally:
+
+# Go to project directory from cmd or terminal type:
+```
+$ npm install
+$ npm start
+```
