@@ -2,7 +2,7 @@
   "name": "bitaksi-getir-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mighty-shore-63244.herokuapp.com",
+  "homepage": "https://mighty-shore-63244.herokuapp.com/getRecords",
   "devDependencies": {
     "react-scripts": "0.9.5"
   },
