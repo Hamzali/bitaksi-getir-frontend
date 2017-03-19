@@ -1,0 +1,39 @@
+
+.list-container {
+  padding: 0;
+  margin: auto;
+  width: 400px;
+  height: 200px;
+  list-style: none;
+  
+  overflow-y: scroll;
+  
+
+}
+
+.list-item {
+  width: 300px;
+  background: rgb(52, 73, 94);
+  padding: 5px;
+  margin: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  color: white;
+  font-weight: bold;
+  font-size: .7rem;
+  text-align: center;
+}
+
+.list-item:hover {
+  cursor: pointer;
+  background-color: #ffffff;
+  color: rgb(231, 76, 60);
+  border-color: rgb(231, 76, 60) solid 5px;
+}
+
+p.value {
+  width: 100px;
+  margin: auto;
+  overflow: hidden;
+}

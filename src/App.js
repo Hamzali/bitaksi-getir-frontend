@@ -1,14 +1,20 @@
-import React, { Component } from 'react';
-import bitaksi from './bitaksi-logo.png';
-import getir from './getir-logo.jpg';
+import React, {Component} from 'react'
+import bitaksi from './bitaksi-logo.png'
+import getir from './getir-logo.jpg'
 
-import './App.css';
+import './App.css'
 
-import { DateRange } from 'react-date-range';
+import {DateRange} from 'react-date-range'
 import axios from 'axios'
 
+
+import Button from './components/button'
+import List from './components/list'
+import Modal from './components/modal'
+import Spinner from './components/spinner'
+
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -16,14 +22,16 @@ class App extends Component {
       endDate: '2017-02-02',
       listData: [],
       err: '',
-      isLoading: false
+      isLoading: false,
+      isModalOpen: false,
+      activeRecord: {
+        value: '',
+        keyVal: ''
+      }
     };
-
-    this.fetchData = this.fetchData.bind(this);
-
   }
 
-  fetchData () {
+  fetchData = () => {
     this.setState({err: '', isLoading: true});
     axios({
       url: 'https://getir-bitaksi-hackathon.herokuapp.com/getRecords',
@@ -32,60 +40,69 @@ class App extends Component {
         "startDate": this.state.startDate,
         "endDate": this.state.endDate
       }
-    })
-    
-    .then((res) => {
+    }).then((res) => {
       this.setState({listData: res.data.records, isLoading: false});
-    })
-    .catch(err => {
+    }).catch(err => {
       console.log(err);
       this.setState({err: 'Error try again!', isLoading: false});
     });
   }
+
+  _handleBtnClick = () => {
+    if(this.state.startDate && this.state.endDate) {
+      this.fetchData();
+    }
+  }
+
+  toggleModal = (value='', keyVal='') => {
+    this.setState({isModalOpen: !this.state.isModalOpen, activeRecord: {value: value, keyVal: keyVal}});
+  }
+
   render() {
-    let btnStyle = this.state.isLoading ? 'loading' : '';
     return (
       <div className="App">
         <div className="App-header">
-          <img src={bitaksi} className="App-logo" alt="logo" />
-          <img src={getir} className="App-logo" alt="logo" />
+          <a href="https://bitaksi.com">
+            <img src={bitaksi} className="App-logo" alt="logo"/>
+          </a>
+          <a href="https://getir.com">
+            <img src={getir} className="App-logo" alt="logo"/>
+          </a>
+          
         </div>
         <div className="App-intro">
           <DateRange
-            startDate='26/01/2016'
-            endDate={ now => {
-              return '02/02/2017';
-            }}
+            startDate={now => '26/01/2016'}
+            endDate={now => '02/02/2017'}
             onChange={(date) => {
               this.setState({
-                startDate: date.startDate.format('YYYY-MM-DD'),
-                endDate: date.endDate.format('YYYY-MM-DD')}
-              );
-            }}
+                startDate: date
+                  .startDate
+                  .format('YYYY-MM-DD'),
+                endDate: date
+                  .endDate
+                  .format('YYYY-MM-DD')
+              });
+            }}/>
+          </div>
+
+          <Button 
+            label={'fetch data'}
+            onClick={this._handleBtnClick}
           />
 
-          <button className={btnStyle}onClick={() => {
-            if (this.state.startDate && this.state.endDate) {
-              this.fetchData();
-            }
-          }}>Fetch Data</button>
+          {this.state.err ? <span className={'error'} > {this.state.err} </span> : ''}
 
-          {this.state.err ? <span className={'error'}>{this.state.err}</span> : ''}
-        </div>
+           {this.state.isLoading
+                ? <Spinner />
+                :  <List data={this.state.listData} toggleModal={this.toggleModal}/>}
 
-        <ul className="flex-container">
-          {this.state.isLoading ? <div className="spinner"></div> : ''}
-          {this.state.listData.map((elem) => {
-            return (
-             <li className={'flex-item'} key={elem.key}>
-               <p>key: {elem.key}</p>
-               <p className="value">{elem.value}</p>
-               </li> 
-            );
-          })}
-
-        </ul>
-      </div>
+            {this.state.isModalOpen ? 
+              <Modal 
+                value={this.state.activeRecord.value}
+                keyVal={this.state.activeRecord.keyVal}
+                closeModal={this.toggleModal}/> : ''}
+          </div>
     );
   }
 }
