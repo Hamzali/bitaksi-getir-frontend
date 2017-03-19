@@ -10,7 +10,7 @@
 
 # Running project loacally:
 
-# Go to project directory from cmd or terminal type:
+### Go to project directory from cmd or terminal type:
 ```
 $ npm install
 $ npm start
